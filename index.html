@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Tongue-in-Cheek Hostage Value Calculator</title>
+</head>
+<body>
+
+<h1>Hostage Value Calculator</h1>
+
+<label for="yearInput">Year: </label>
+<input type="number" id="yearInput" value="" />
+<br><br>
+
+<label for="hostagesInput">Number of Hostages: </label>
+<input type="number" id="hostagesInput" value="1" min="1" />
+<br><br>
+
+<button onclick="calculateValue()">Calculate</button>
+
+<h2 id="result"></h2>
+
+<script>
+  // Pre-fill the year input with the current year
+  document.getElementById('yearInput').value = new Date().getFullYear();
+
+  function calculateValue() {
+    // Grab user input
+    const year = parseInt(document.getElementById('yearInput').value);
+    const hostages = parseInt(document.getElementById('hostagesInput').value);
+
+    // Constants based on historical data
+    const baseYear = 1795;
+    const baseCostPerHostage = 1000000 / 115; // ~$8,695.65
+    const annualGrowthRate = 0.053; // ~5.3%
+
+    // Calculate how many years after 1795
+    const yearsDifference = Math.max(year - baseYear, 0);
+
+    // Cost per hostage for the user-selected year
+    const costPerHostage = baseCostPerHostage * Math.pow(1 + annualGrowthRate, yearsDifference);
+
+    // Total cost for the specified number of hostages
+    const totalCost = costPerHostage * hostages;
+
+    // Format as a readable dollar figure
+    const formattedCost = totalCost.toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      maximumFractionDigits: 2
+    });
+
+    // Show it in the page
+    document.getElementById('result').innerText = 
+      `Estimated "hostage value": ${formattedCost}`;
+  }
+</script>
+
+</body>
+</html>
